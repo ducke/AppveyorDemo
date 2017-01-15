@@ -1,0 +1,18 @@
+os:
+  - "WMF 5"
+
+branches:
+  only:
+    - master
+
+install:
+  - ps: |
+      Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+      Install-Module Pester -MinimumVersion 3.4.0 -Scope CurrentUser -Force | Out-Null
+
+build_script:
+  - ps: |
+      $testResultsFile = Join-Path $pwd -ChildPath "$PSScriptRoot/TestResults.xml"
+      $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResultsFile -PassThru
+      (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $testResultsFile)
+      if ($res.FailedCount -gt 0) { throw "$($res.FailedCount) tests failed."}
