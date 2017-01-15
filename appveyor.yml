@@ -26,7 +26,7 @@ test_script:
       }
       Import-Module Pester
       $res = Invoke-Pester @pesterParams
-      ([xml](Get-Content  $testResultsFile)).Save([console]::Out)
+      ([xml](Get-Content $testResultsFile)).Save([console]::Out)
       if (Test-Path $testResultsFile) {
           (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $testResultsFile)
       }
