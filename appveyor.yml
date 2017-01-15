@@ -10,6 +10,8 @@ install:
       Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
       Install-Module Pester -MinimumVersion 3.4.0 -Scope CurrentUser -Force | Out-Null
 
+build: false
+
 test_script:
   - ps: |
       $testResultsFile = Join-Path $pwd -ChildPath "$PSScriptRoot/TestResults.xml"
