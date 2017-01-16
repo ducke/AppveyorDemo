@@ -25,6 +25,7 @@ test_script:
           Verbose      = $VerbosePreference
       }
       Import-Module Pester
+      (get-module pester).version.ToString()
       $res = Invoke-Pester @pesterParams
       #([xml](Get-Content $testResultsFile)).Save([console]::Out)
       Get-Content $testResultsFile
